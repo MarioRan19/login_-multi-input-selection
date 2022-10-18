@@ -1,6 +1,9 @@
+import './style.scss';
 import React, { useState, useCallback } from 'react';
 import { Button, Form, Input, Select, Space } from 'antd';
 import { Layout } from 'antd';
+
+//Os importes / the imports
 
 const { Option } = Select;
 
@@ -26,7 +29,7 @@ export function InputFilter() {
 
     const [cpfOn, setCpfOn] = useState(false)
     const [cnpjOn, setCnpjOn] = useState(false)
-    const [telefoneOn, setTelefoneOn] = useState(false)
+    const [phoneOn, setPhoneOn] = useState(false)
     const [emailOn, setEmailOn] = useState(false)
     const [tipo, setTipo] = useState("text")
     const [cpf, setCpf] = useState('');
@@ -46,7 +49,7 @@ export function InputFilter() {
                     setCnpjOn(false)
                 }
                 else {
-                    setTelefoneOn(false)
+                    setPhoneOn(false)
                 }
                 return;
 
@@ -60,13 +63,13 @@ export function InputFilter() {
                     setEmailOn(false)
                 }
                 else {
-                    setTelefoneOn(false)
+                    setPhoneOn(false)
                 }
                 return;
 
-            case 'Telefone':
+            case 'Phone':
                 setTipo("text")
-                setTelefoneOn(!telefoneOn)
+                setPhoneOn(!phoneOn)
                 if (cnpjOn === true) {
                     setCnpjOn(false)
                 }
@@ -88,7 +91,7 @@ export function InputFilter() {
                     setEmailOn(false)
                 }
                 else {
-                    setTelefoneOn(false)
+                    setPhoneOn(false)
                 }
 
                 return;
@@ -97,42 +100,42 @@ export function InputFilter() {
         };
     }
 
-    function verificarCPF(strCpf) {
+    function checkCPF(strCpf) {
         if (!/[0-9]{11}/.test(strCpf)) return false;
         if (strCpf === "00000000000") return false;
 
-        var soma = 0;
+        var sum = 0;
 
         for (let i = 1; i <= 9; i++) {
-            soma += parseInt(strCpf.substring(i - 1, i)) * (11 - i);
+            sum += parseInt(strCpf.substring(i - 1, i)) * (11 - i);
         }
 
-        var resto = soma % 11;
+        var rest = sum % 11;
 
-        if (resto === 10 || resto === 11 || resto < 2) {
-            resto = 0;
+        if (rest === 10 || rest === 11 || rest < 2) {
+            rest = 0;
         } else {
-            resto = 11 - resto;
+            rest = 11 - rest;
         }
 
-        if (resto !== parseInt(strCpf.substring(9, 10))) {
+        if (rest !== parseInt(strCpf.substring(9, 10))) {
             return false;
         }
 
-        soma = 0;
+        sum = 0;
 
         for (var i = 1; i <= 10; i++) {
-            soma += parseInt(strCpf.substring(i - 1, i)) * (12 - i);
+            sum += parseInt(strCpf.substring(i - 1, i)) * (12 - i);
         }
-        resto = soma % 11;
+        rest = sum % 11;
 
-        if (resto === 10 || resto === 11 || resto < 2) {
-            resto = 0;
+        if (rest === 10 || rest === 11 || rest < 2) {
+            rest = 0;
         } else {
-            resto = 11 - resto;
+            rest = 11 - rest;
         }
 
-        if (resto !== parseInt(strCpf.substring(10, 11))) {
+        if (rest !== parseInt(strCpf.substring(10, 11))) {
             return false;
         }
 
@@ -185,7 +188,7 @@ export function InputFilter() {
 
                 <Form.Item
                     name="gender"
-                    label="Tipo de Dado"
+                    label="Data Type"
                     rules={[
                         {
                             required: true,
@@ -193,13 +196,13 @@ export function InputFilter() {
                     ]}
                 >
                     <Select
-                        placeholder="Selecione a opção de Login"
+                        placeholder="Select Login option"
                         onChange={onGenderChange}
                         allowClear
                     >
                         <Option value="Email">Email</Option>
                         <Option value="CNPJ">CNPJ</Option>
-                        <Option value="Telefone">Telefone</Option>
+                        <Option value="Phone">Phone</Option>
                         <Option value="CPF">CPF</Option>
                     </Select>
                 </Form.Item>
@@ -211,22 +214,22 @@ export function InputFilter() {
                     onChange={(event) => setCnpj(event.target.value)} className={`input ${cnpjOn === true && 'active'}`} />
 
                 <Input type={tipo} value={tel} onKeyUp={handleKeyUpTel} placeholder="(99) 99999-9999"
-                    onChange={(event) => setTel(event.target.value)} className={`input ${telefoneOn === true && 'active'}`} />
+                    onChange={(event) => setTel(event.target.value)} className={`input ${phoneOn === true && 'active'}`} />
 
                 <Input type={tipo} value={email} placeholder="example@gmail.com"
                     onChange={(event) => setEmail(event.target.value)} className={`input ${emailOn === true && 'active'}`} />
 
 
                 <a className="login-form-forgot" href="">
-                    Esqueceu sua senha? Relaxa.
+                    Forgot your password? Relax.
                 </a>
 
                 <Form.Item {...tailLayout}>
                     <Button type="primary" htmlType="submit">
-                        Enviar
+                        Submit
                     </Button>
                     <Button htmlType="button" onClick={onReset}>
-                        Redefinir
+                        reset
                     </Button>
                 </Form.Item>
             </Form>
